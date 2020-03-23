@@ -1,83 +1,68 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView } from 'react-native'
-import { Card, Headline, Subheading, List, Portal, Dialog, Paragraph, Button } from "react-native-paper";
+import { Text, View, StyleSheet,ScrollView } from 'react-native'
+import {Card,Headline, Subheading, Chip, Caption, DataTable, Divider, Paragraph} from 'react-native-paper'
 
 export class PrescriptionScreen extends Component {
     state = {
-        status : "Waiting for Doctor's Response",
-        color : "#AAA",
-        dataRequired : false,
-        additionalData : [],
-        code : "",
-        dialogVisible : false
-    }
-    componentDidMount(){
-        setTimeout(()=>{
-            this.setState({
-                status : "Additional Data Required",
-                color : "#000",
-                dataRequired : true,
-                additionalData : ["Temperature", "Blood Pressure"],
-                code : "4532",
-                dialogVisible: true
-            })
-        }, 2000)
-    }
-    componentDidUpdate(){
-        if(this.state.dataRequired){
-            console.log("Additional Data Required")
-        }
+        symptoms : this.props.route.params.symptoms
     }
     render() {
-        let symptoms = [];
-        let additionalData = []
-        for(let i=0;i<this.props.route.params.symptoms.length;++i){
-            symptoms.push((
-                <List.Item 
-                title={this.props.route.params.symptoms[i]} 
-                style={{
-                    padding:0}}/>
-            ))
-        }
-        for(let i =0;i<this.state.additionalData.length;++i){
-            additionalData.push((
-                <List.Item 
-                title={this.state.additionalData[i]} 
-                style={{
-                    padding:0}}/>
+        let chips = []
+        for(let i=0;i<this.state.symptoms.length;++i){
+            chips.push((
+            <Chip
+                style ={{margin:"1%"}}
+                mode="flat" 
+                >
+                {this.state.symptoms[i]}</Chip>
             ))
         }
         return (
             <ScrollView>
             <View>
-                <Text style={styles.heading}> Prescription  </Text>
-                <Portal>
-                    <Dialog 
-                        visible ={this.state.dialogVisible}
-                        onDismiss = {()=> {this.setState({dialogVisible : false})}}>
-                            {/* <Dialog.Title>Additional Data Needed</Dialog.Title> */}
-                            <Dialog.Content><Paragraph>Doctor has requested some additional data. Please visit medical center in your hostel to get these readings</Paragraph></Dialog.Content>
-                            <Dialog.Actions><Button onPress = {()=> {this.setState({dialogVisible : false})}}>OK</Button></Dialog.Actions>
-                        </Dialog>
-                </Portal>
-                <Card style={{margin:"3%", padding: "5%", paddingTop: "3%"}}>
+                <Text style={styles.heading}>Prescription </Text>
+                <Caption style={{margin:"5%"}}>Prescription ID #34R343 </Caption>
+                <Card style={{margin:"3%", padding: "5%", paddingVertical: "3%"}}>
                     <Card.Content>
-                        <Headline>Patient Name</Headline>
-                        <Subheading style={{fontStyle:"italic"}}>19,Male, A Block</Subheading>
-                        <List.Section>
-                            <Text style={{marginVertical:"1%"}}>Your Symptoms are :</Text>
-                            {symptoms}
-                        </List.Section>
-                        <Text style={{fontWeight:"bold"}}>Status : {this.state.status}</Text>
-                    </Card.Content>
-                </Card>
-                <Card style={{margin:"3%", padding: "5%", paddingTop: "3%"}}>
-                    <Card.Content >
-                        <Headline style={{color: this.state.color}}>Additional Data</Headline>
-                        <Subheading>{this.state.code}</Subheading>
-                        <Text style={{color: this.state.color}}>Doctor can request additional data for prescribing you medicines</Text>
-                        
-                        {additionalData}
+                        <Headline>Apoorv Kansal</Headline>
+                        <Caption>19, Male, A Block</Caption>
+                        <Subheading style={{marginVertical:"3%"}}>Common Cold</Subheading>
+                        <Text>Symptoms : </Text>
+                        <View style={{flexDirection:'row', flexWrap:'wrap'}}>
+                            {chips}
+                        </View>
+                        <Text>Additional Data : None</Text>
+                        <Divider style={{marginVertical:"5%"}}/>
+                        <Text style={{marginVertical:"2%"}}>Prescription</Text>
+                        <DataTable style={{marginHorizontal:0, paddingHorizontal:0}}>
+                            <DataTable.Header style={{marginHorizontal:0, paddingHorizontal:0}}>
+                                <DataTable.Title>Medicine</DataTable.Title>
+                                <DataTable.Title numeric>Dosage</DataTable.Title>
+                            </DataTable.Header>
+
+                            <DataTable.Row style={{marginHorizontal:0, paddingHorizontal:0}}>
+                                <DataTable.Cell>Dolo 200mg</DataTable.Cell>
+                                <DataTable.Cell numeric>0-1-1</DataTable.Cell>
+                            </DataTable.Row>
+
+                            <DataTable.Row style={{marginHorizontal:0, paddingHorizontal:0}}>
+                                <DataTable.Cell>Antibiotic 100mg</DataTable.Cell>
+                                <DataTable.Cell numeric>1-1-1</DataTable.Cell>
+                            </DataTable.Row>
+                            <DataTable.Row style={{marginHorizontal:0, paddingHorizontal:0}}>
+                                <DataTable.Cell>Ipsum 100mg</DataTable.Cell>
+                                <DataTable.Cell numeric>0-0-1</DataTable.Cell>
+                            </DataTable.Row>
+                            <DataTable.Row style={{marginHorizontal:0, paddingHorizontal:0}}>
+                                <DataTable.Cell>Lorem 100mg</DataTable.Cell>
+                                <DataTable.Cell numeric>0-0-1</DataTable.Cell>
+                            </DataTable.Row>
+                        </DataTable>
+                        <Divider/>
+                        <Paragraph style={{marginVertical:"4%"}}>You can collect medicines from medical center in your Hostel.</Paragraph>
+                        <Paragraph style={{marginVertical:"4%"}}>Precautions:</Paragraph>
+                        <Text style={{marginVertical:"2%"}}>Drink Hot Water.</Text>
+                        <Text style={{marginVertical:"2%"}}>Do Salt water Garggles</Text>
                     </Card.Content>
                 </Card>
             </View>

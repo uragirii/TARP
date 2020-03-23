@@ -13,7 +13,7 @@ export class SymptomsScreen extends Component {
             ToastAndroid.show("Enter some symptoms", ToastAndroid.SHORT)
         }
         else{
-            this.props.navigation.navigate("Prescription", {symptoms: this.state.chips})
+            this.props.navigation.navigate("Details", {symptoms: this.state.chips})
         }
     }
     removeChip(i){
@@ -28,13 +28,13 @@ export class SymptomsScreen extends Component {
         let splitted = txt.split(",")
         if(splitted.length>1){
             this.setState(prevState=>{
-                if(prevState.chips.includes(splitted[0])){
+                if(prevState.chips.includes(splitted[0].trim())){
                     ToastAndroid.show("Already Added", ToastAndroid.SHORT)
                     return {
                         text : splitted[1]
                     }
                 }else{
-                    prevState.chips.push(splitted[0])
+                    prevState.chips.push(splitted[0].trim())
                 return {
                     text : splitted[1],
                     chips : prevState.chips
