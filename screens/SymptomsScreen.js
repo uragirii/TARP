@@ -69,7 +69,7 @@ export class SymptomsScreen extends Component {
                 <Text style={styles.heading}> Symptoms</Text>
                 <Card style={{margin:"3%", padding: "5%", paddingTop: "3%"}}>
                 <Card.Content>
-                <Paragraph style={styles.para}>Enter you Symptoms. Seperate your Symptoms with comma </Paragraph>
+                <Paragraph style={styles.para}>Enter you Symptoms. Seperate them with comma </Paragraph>
                 <TextInput style={styles.textInput} 
                 mode="outlined" 
                 label="Symptoms" 

@@ -9,7 +9,7 @@ export class DetailsScreen extends Component {
         dataRequired : false,
         prescribtionRcvd : false,
         additionalData : [],
-        code : "",
+        code : "Not Required",
         dialogVisible : false,
         symptoms : this.props.route.params.symptoms
     }
@@ -26,7 +26,7 @@ export class DetailsScreen extends Component {
                 code : "Your Code :4532",
                 dialogVisible: true
             })
-        }, 10000)
+        }, 500)
         setTimeout(()=>{
             this.setState({
                 status : "Prescription Recieved",
@@ -37,7 +37,7 @@ export class DetailsScreen extends Component {
                 dialogVisible: false,
                 prescribtionRcvd : true
             })
-        }, 20000)
+        }, 500)
     }
     render() {
         let symptoms = [];

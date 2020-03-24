@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ToastAndroid, Linking } from 'react-native'
-import { Headline,  TextInput, Button } from "react-native-paper";
+import { Headline,  TextInput, Button} from "react-native-paper";
 
 export class LoginScreen extends Component {
     state = {
@@ -17,7 +17,7 @@ export class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.view}>
-                <Headline>Registration Number</Headline>
+                <Headline> Registration Number</Headline>
                     <View style = {styles.textbox}>
                         <TextInput
                         label="Registration Number"
