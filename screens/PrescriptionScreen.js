@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
     },
     linearGradient: {
         flex: 1,
-        borderRadius: 5
+        borderRadius: 10
       }
 })
