@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import {Card, Caption, Headline, Subheading, TouchableRipple,Button, ActivityIndicator } from "react-native-paper";
 import Timeline from '../components/Timeline/Timeline'
 import LinearGradient from 'react-native-linear-gradient'
@@ -14,7 +14,7 @@ export class DetailsScreen extends Component {
         stage : 1,
         focussedArray : [false, false, false],
         completedArray : [false, false, false],
-        symptoms : ["Symptom 1", "Symptom 2", "Symptom 3"],
+        symptoms : this.props.route.params.symptoms,
         headings : ["Waiting for Doctor", "Additional Data", "Writing Prescribtion"],
         subheadings : [
             "We are connecting your request to Doctors. This usually takes 2-3 mins.",
@@ -23,7 +23,8 @@ export class DetailsScreen extends Component {
         ],
         dataRequested: false,
         code: "",
-        doctorName : "Dr. Sanjeev Goel"
+        doctorName : "Dr. Sanjeev Goel",
+        student : this.props.route.params.student
     }
     changeArrays(){
         //Depending on current stage changes the array
@@ -56,7 +57,7 @@ export class DetailsScreen extends Component {
             let newHeadings = this.state.headings
             newHeadings[0] = "Doctor Accepted"
             let newSubheadings = this.state.subheadings
-            newSubheadings[0] = `${this.state.doctorName} has accepted your request. Doctor is currently reviewing your symptoms`
+            newSubheadings[0] = "Dr. Sanjeeb  has accepted your request. Doctor is currently reviewing your symptoms"
             this.setState({
                 stage : 2,
                 headings: newHeadings,
@@ -112,6 +113,7 @@ export class DetailsScreen extends Component {
         if(this.state.stage>4){
             viewPresc=true
         }
+        const student = this.state.student
         return (
             <LinearGradient colors={['#8A2387', '#E94057', '#F27121']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.linearGradient}>
 
@@ -122,8 +124,8 @@ export class DetailsScreen extends Component {
                 
                 <TouchableRipple onPress={()=>{this.changeOfStage()}}>
                     <View style={{padding: "5%"}}>
-                    <Headline style={{}}>Apoorv Kansal</Headline>
-                    <Caption style={{ marginTop:"2%"}}>19, Male , A Block</Caption>
+                    <Headline style={{}}>{student.name}</Headline>
+                    <Caption style={{ marginTop:"2%"}}>{student.age}, {student.sex === "M"? "Male" :"Female"} , {student.hostel} Block</Caption>
                     <View style={{ flexDirection: 'row', justifyContent:"space-between", marginTop:"2%", paddingBottom:0, marginBottom:0}}>
                         <Caption style={{  paddingBottom:0, marginBottom:0}}>{this.state.symptoms.toString()}</Caption>
                     </View>

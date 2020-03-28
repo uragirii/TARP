@@ -19,13 +19,18 @@ export class NewUserScreen extends Component {
     checkAndProceed(){
         if(this.state.name==="" || this.state.sex === "" || this.state.age===0 || this.state.hostel===""){
             this.setState({visible:true})
-            console.log(this.state)
-
         }
         else{
             this.setState({loading:true})
             // Do Firebase commands
-            this.props.navigation.navigate("Symptoms")
+            this.props.navigation.navigate("Symptoms", {
+                student :{
+                    name : this.state.name,
+                    sex : this.state.sex,
+                    age : this.state.age,
+                    hostel : this.state.hostel
+                }
+            })
         }
     }
     changeBlock(sex){

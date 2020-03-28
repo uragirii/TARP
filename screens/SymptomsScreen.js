@@ -1,19 +1,28 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, ToastAndroid,ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { TextInput, Chip, Paragraph,Card, Button, TouchableRipple, List } from "react-native-paper";
-
+import { TextInput, Chip, Paragraph,Card, Button, TouchableRipple, List, Caption } from "react-native-paper";
+import LinearGradient from'react-native-linear-gradient'
 export class SymptomsScreen extends Component {
     state={
-        chips : ["One", "Two"],
+        student: this.props.route.params.student,
+        chips : [],
         text : ''
     }
     checkAndProceed(){
+        this.setState(prevState=>{
+            if(this.state.text.trim()!==""){
+                prevState.chips.push(this.state.text.trim())
+                return {
+                    chips : prevState.chips
+                }
+            }
+        })
         if (this.state.chips.length<1){
             ToastAndroid.show("Enter some symptoms", ToastAndroid.SHORT)
         }
         else{
-            this.props.navigation.navigate("Details", {symptoms: this.state.chips})
+            this.props.navigation.navigate("Details", {symptoms: this.state.chips, student : this.state.student})
         }
     }
     removeChip(i){
@@ -64,10 +73,10 @@ export class SymptomsScreen extends Component {
 
         }
         return (
+        <LinearGradient colors={['#8E2DE2', '#4A00E0']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.linearGradient}>
             <ScrollView>
                 <View>
-                <Text style={styles.heading}> Symptoms</Text>
-                <Card style={{margin:"3%", padding: "5%", paddingTop: "3%"}}>
+                <Card style={{margin:"5%", padding: "3%", padding:0, border:1, borderRadius: 10,elevation:12, marginTop:"10%" }} >
                 <Card.Content>
                 <Paragraph style={styles.para}>Enter you Symptoms. Seperate them with comma </Paragraph>
                 <TextInput style={styles.textInput} 
@@ -81,14 +90,17 @@ export class SymptomsScreen extends Component {
                 </Card.Content>
                 <Card.Actions>
                     <Button 
-                    style={{alignContent:"flex-end"}} 
+                    mode="flat"
+                    style={styles.button} 
                     onPress={()=>{this.checkAndProceed()}}>Get Presciption</Button>
                 </Card.Actions>
                 </Card>
-                <Card style={{margin:"3%", padding: "5%", paddingTop: 0}}>
+                <Caption style={{color:"white", textAlign:"center"}}>Or choose from your past symptoms</Caption>
+
+                <Card style={{margin:"5%", padding: "3%", padding:0, border:1, borderRadius: 10,elevation:12, marginTop:"5%" }} >
+
                 <Card.Content>
                     <List.Section>
-                        <List.Subheader>Your History of past 5 treatments</List.Subheader>
                     <TouchableRipple 
                     onPress={()=>{console.log('List Item Pressed')}}
                     >
@@ -138,6 +150,7 @@ export class SymptomsScreen extends Component {
                 </Card>
             </View>
             </ScrollView>
+            </LinearGradient>
         )
     }
 }
@@ -145,20 +158,21 @@ export class SymptomsScreen extends Component {
 export default SymptomsScreen
 
 const styles = StyleSheet.create({
-    heading : {
-        marginTop : "5%",
-        margin : "5%",
-        marginBottom : 0,
-        fontSize : 40
-    },
     para : {
-
+        marginHorizontal:"7%",
+        marginTop:"7%"
     },
     textInput : {
         marginVertical : "7%",
         marginHorizontal : "5%"
     },
     button : {
+        marginBottom:"7%",
+        marginTop:"3%",
+        flexDirection:"row",
+        flex:1,
+        marginHorizontal:"7%",
+        justifyContent:"flex-end"
     },
     chips:{
         display:"flex"
