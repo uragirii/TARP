@@ -1,19 +1,40 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, ToastAndroid, Linking } from 'react-native'
-import { Headline,  TextInput,  Card, Caption, Button} from "react-native-paper";
+import { View, StyleSheet, ToastAndroid, Linking, Text } from 'react-native'
+import { Headline,  TextInput,  Card, Caption, Button, ActivityIndicator} from "react-native-paper";
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as Animatable from "react-native-animatable"
+import firestore from '@react-native-firebase/firestore';
 
 export class LoginScreen extends Component {
     state = {
-        text : ''
-    };
-    checkAndProceed(){
+        text : '',
+        loading:false,
+        display: "none",
+        displayForm : "flex"
+    }
+    loading = null;
+    form = null;
+    async checkAndProceed(){
         if(this.state.text=== ''){
             ToastAndroid.show("Please Enter Registration Number to proceed", ToastAndroid.SHORT)
         }
         else{
-            this.props.navigation.navigate("NewUser")
+            // this.props.navigation.navigate("NewUser")
+            // Here first check if the user exists or not. If user exists then go to symptoms page
+            this.setState({
+                loading:true,
+            })
+            const studentCollection = firestore().collection('students');
+            const student = await studentCollection.doc(this.state.text.toUpperCase()).get()
+            if(student.exists){
+                const studentInfo = student.data()
+                this.props.navigation.navigate("Symptoms", {student: studentInfo})
+            }
+            else{
+                // Student needs to create a new id
+                this.props.navigation.navigate("NewUser", {number: this.state.text.toUpperCase()})
+            }
         }
     }
     //TODO: Use regex statement for checking registration number
@@ -24,7 +45,10 @@ export class LoginScreen extends Component {
          
             <View style={{flexDirection:"column", justifyContent:"space-around", flex:1}}>
             <Card style={{margin:"5%", padding: "3%", padding:0, border:1, borderRadius: 10,elevation:12, marginTop:"10%" }} >
-
+                <Animatable.View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop:"20%",marginBottom:"4%", display:this.state.display}} ref={ref => this.loading = ref}>
+                    <ActivityIndicator color="#f90024"/><Text style={{color:"white", paddingLeft:"5%"}}> Checking Database</Text>
+                </Animatable.View>
+                <Animatable.View ref={ref => this.form = ref} style={{display:this.state.displayForm}}>
                 <Headline style={{fontSize:40, paddingTop:"5%", marginTop:"15%", textAlign:"center", paddingBottom:"2%"}}>Hello Doctor!</Headline>
             
                     <Caption style={{textAlign:"center", padding:"5%"}}>Get medical assistance without leaving your Hostel.</Caption>
@@ -36,9 +60,9 @@ export class LoginScreen extends Component {
                      ></TextInput>
                     <View style={styles.justifySpaceRow}>
                         <Button mode="contained" onPress={()=>Linking.openURL("tel:00000000")}>Call Ambulance</Button>
-                        <Button mode="contained" onPress={()=>this.checkAndProceed()}>Go!</Button>
+                        <Button mode="contained" onPress={()=>this.checkAndProceed()} loading={this.state.loading} disabled={this.state.loading}>Go!</Button>
                     </View>
-
+                    </Animatable.View>
                      </Card>
         <Caption style={{color:"white", textAlign:"center"}}>Made with <Icon name="heart"></Icon> by VITians</Caption>
             </View>

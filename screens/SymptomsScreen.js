@@ -67,6 +67,7 @@ export class SymptomsScreen extends Component {
                 mode="flat" 
                 onClose={()=>{this.removeChip(i)}}
                 icon={<Icon name="close"></Icon>} 
+                key = {i}
                 >
                 {this.state.chips[i]}</Chip>
             ))

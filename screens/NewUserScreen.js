@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native'
 import { Headline,  TextInput,  Card, Caption, Button, RadioButton, Snackbar} from "react-native-paper";
 import LinearGradient from 'react-native-linear-gradient'
 import { ScrollView } from 'react-native-gesture-handler';
-
+import firestore from '@react-native-firebase/firestore';
 
 export class NewUserScreen extends Component {
     state = {
@@ -23,14 +23,29 @@ export class NewUserScreen extends Component {
         else{
             this.setState({loading:true})
             // Do Firebase commands
-            this.props.navigation.navigate("Symptoms", {
-                student :{
-                    name : this.state.name,
-                    sex : this.state.sex,
-                    age : this.state.age,
-                    hostel : this.state.hostel
-                }
+            // First connect to firebase and write data and then
+            firestore()
+            .collection('students')
+            .doc(this.props.route.params.number)
+            .set({
+                name : this.state.name,
+                sex : this.state.sex,
+                age : this.state.age,
+                hostel : this.state.hostel,
+                allergy: this.state.allergy,
+                history : this.state.history
             })
+            .then(() => {
+                console.log('User added!');
+                this.props.navigation.navigate("Symptoms", {
+                    student :{
+                        name : this.state.name,
+                        sex : this.state.sex,
+                        age : this.state.age,
+                        hostel : this.state.hostel
+                    }
+                })
+            });
         }
     }
     changeBlock(sex){
