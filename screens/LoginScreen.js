@@ -3,7 +3,6 @@ import { View, StyleSheet, ToastAndroid, Linking, Text } from 'react-native'
 import { Headline,  TextInput,  Card, Caption, Button, ActivityIndicator} from "react-native-paper";
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import * as Animatable from "react-native-animatable"
 import firestore from '@react-native-firebase/firestore';
 
 export class LoginScreen extends Component {
@@ -39,18 +38,21 @@ export class LoginScreen extends Component {
     }
     //TODO: Use regex statement for checking registration number
     render() {
-        return (
-            <LinearGradient colors={['#8E2DE2', '#4A00E0']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.linearGradient}>
-
-         
-            <View style={{flexDirection:"column", justifyContent:"space-around", flex:1}}>
-            <Card style={{margin:"5%", padding: "3%", padding:0, border:1, borderRadius: 10,elevation:12, marginTop:"10%" }} >
-                <Animatable.View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop:"20%",marginBottom:"4%", display:this.state.display}} ref={ref => this.loading = ref}>
+        let cardDetails
+        if(this.state.loading){
+            cardDetails = (
+                <View>
+                <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop:"20%",marginBottom:"4%"}}>
                     <ActivityIndicator color="#f90024"/><Text style={{color:"white", paddingLeft:"5%"}}> Checking Database</Text>
-                </Animatable.View>
-                <Animatable.View ref={ref => this.form = ref} style={{display:this.state.displayForm}}>
+                </View>
+                </View>
+            )
+        }
+        else{
+            cardDetails = (
+            <Card style={{margin:"5%", padding: "3%", padding:0, border:1, borderRadius: 10,elevation:12, marginTop:"10%" }} >
+                <View>
                 <Headline style={{fontSize:40, paddingTop:"5%", marginTop:"15%", textAlign:"center", paddingBottom:"2%"}}>Hello Doctor!</Headline>
-            
                     <Caption style={{textAlign:"center", padding:"5%"}}>Get medical assistance without leaving your Hostel.</Caption>
                     <TextInput style={{maxWidth:"60%", marginHorizontal:"20%", marginBottom:"5%", textAlign:"center"}} 
                     label="Registration Number" 
@@ -62,8 +64,17 @@ export class LoginScreen extends Component {
                         <Button mode="contained" onPress={()=>Linking.openURL("tel:00000000")}>Call Ambulance</Button>
                         <Button mode="contained" onPress={()=>this.checkAndProceed()} loading={this.state.loading} disabled={this.state.loading}>Go!</Button>
                     </View>
-                    </Animatable.View>
-                     </Card>
+                    </View>
+                    </Card>
+                
+            )
+        }
+        return (
+            <LinearGradient colors={['#8E2DE2', '#4A00E0']} start={{x: 0, y: 0}} end={{x: 1, y: 0}} style={styles.linearGradient}>
+
+         
+            <View style={{flexDirection:"column", justifyContent:"space-around", flex:1}}>
+                {cardDetails}
         <Caption style={{color:"white", textAlign:"center"}}>Made with <Icon name="heart"></Icon> by VITians</Caption>
             </View>
             </LinearGradient>

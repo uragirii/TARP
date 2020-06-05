@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, ScrollView } from 'react-native'
 import {Card, Caption, Headline, Subheading, TouchableRipple,Button, ActivityIndicator } from "react-native-paper";
-import Timeline from '../components/Timeline/Timeline'
+import  firestore  from "@react-native-firebase/firestore";
 import LinearGradient from 'react-native-linear-gradient'
 import LottieView from 'lottie-react-native';
 // state : {
@@ -14,7 +14,7 @@ export class DetailsScreen extends Component {
     state = {
         title: "Connecting to Doctor",
         text: "We are notifying doctors about your symptoms. This process takes around 3-4 mins.",
-        symptoms : this.props.route.params.symptoms,
+        pres : this.props.route.params.pres,
         student:this.props.route.params.student,
         viewPresc: false,
     }
@@ -40,8 +40,34 @@ export class DetailsScreen extends Component {
         this.props.navigation.navigate("Prescription", {symptoms: this.state.symptoms})
     }
 
+    presResult = (snapshot) =>{
+        snapshot.forEach((presc)=>{
+            if (presc.id === String(this.state.pres.id)){
+                const data = presc.data()
+                if(data.status === "DOCTOR_WRITING"){
+                    this.setState({
+                        title: "Writing Prescription",
+                        text: "Doctor is now reviewing your symptoms and writing Presciption. Hang on for 2 more minutes.",
+                    })
+                }
+                if(data.status === "COMPLETED"){
+                    this.setState({
+                        title: "Prescription Recieved",
+                        text: "Click view to view the course prescribed by doctor",
+                        viewPresc:true
+                    })
+                }
+            }
+        })
+    }
+
     componentDidMount(){
-        this.changeArrays()
+        // this.changeArrays()
+        // Listen to changes in the prescription
+        const db = firestore()
+        db.collection(`prescription`)
+        .onSnapshot(this.presResult, (err)=>{console.log(err)})
+
     }
     render() {
         
@@ -84,12 +110,12 @@ export class DetailsScreen extends Component {
             <View>
             <Card style={{margin:"5%", padding: "3%", padding:0, border:1, borderRadius: 10,elevation:12, marginTop:"10%" }} >
                 
-                <TouchableRipple onPress={()=>{this.changeOfStage()}}>
+                <TouchableRipple onPress={()=>{}}>
                     <View style={{padding: "5%"}}>
                     <Headline style={{}}>{student.name}</Headline>
                     <Caption style={{ marginTop:"2%"}}>{student.age}, {student.sex === "M"? "Male" :"Female"} , {student.hostel} Block</Caption>
                     <View style={{ flexDirection: 'row', justifyContent:"space-between", marginTop:"2%", paddingBottom:0, marginBottom:0}}>
-                        <Caption style={{  paddingBottom:0, marginBottom:0}}>{this.state.symptoms.toString()}</Caption>
+                        <Caption style={{  paddingBottom:0, marginBottom:0}}>{this.state.pres.symptoms.toString()}</Caption>
                     </View>
                     <View>
                     <View style={{ flexDirection: 'column', justifyContent:"space-between"}}>

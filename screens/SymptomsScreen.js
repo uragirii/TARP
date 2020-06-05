@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, ToastAndroid,ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { TextInput, Chip, Paragraph,Card, Button, TouchableRipple, List, Caption } from "react-native-paper";
 import LinearGradient from'react-native-linear-gradient'
+import  firestore  from "@react-native-firebase/firestore";
 export class SymptomsScreen extends Component {
     state={
         student: this.props.route.params.student,
@@ -22,7 +23,26 @@ export class SymptomsScreen extends Component {
             ToastAndroid.show("Enter some symptoms", ToastAndroid.SHORT)
         }
         else{
-            this.props.navigation.navigate("Details", {symptoms: this.state.chips, student : this.state.student})
+            // First create a prescription obj
+            const presID = Math.floor(Math.random()*100000)
+            const pres = {
+                createdAt : firestore.FieldValue.serverTimestamp(),
+                symptoms: this.state.chips,
+                status: "DOCTOR_PENDING",
+                id: presID
+            }
+            console.log(this.state.student)
+            const db = firestore()
+            db.collection('prescription')
+            .doc(String(presID))
+            .set(pres)
+            .then(()=>db.collection("students").doc(this.state.student.regno)
+                .update({
+                    prescription : firestore.FieldValue.arrayUnion(presID)
+                })
+            ).then(()=>{
+                this.props.navigation.navigate("Details", {pres: pres, student : this.state.student})
+            })
         }
     }
     removeChip(i){

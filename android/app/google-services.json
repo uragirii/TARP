@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "830559110035",
-    "firebase_url": "https://hello-doctor-88ffc.firebaseio.com",
-    "project_id": "hello-doctor-88ffc",
-    "storage_bucket": "hello-doctor-88ffc.appspot.com"
+    "project_number": "589544158461",
+    "firebase_url": "https://doctor-tarp.firebaseio.com",
+    "project_id": "doctor-tarp",
+    "storage_bucket": "doctor-tarp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:830559110035:android:3c7bdc44d3b829c26d5e66",
+        "mobilesdk_app_id": "1:589544158461:android:f26a54067419dbd4453a94",
         "android_client_info": {
           "package_name": "com.tarp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "830559110035-hcct3se03rvdthbqhod3nqraocvgaabd.apps.googleusercontent.com",
+          "client_id": "589544158461-9u911kqcf3lek12fobgefo37k9peifrs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDH2WEd38byegOLAnpTGpgh7nLhmBSRBMw"
+          "current_key": "AIzaSyBBnN_tCTcZNF695eU4v3GJKzJ5AbVDjTE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "830559110035-hcct3se03rvdthbqhod3nqraocvgaabd.apps.googleusercontent.com",
+              "client_id": "589544158461-9u911kqcf3lek12fobgefo37k9peifrs.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

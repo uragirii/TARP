@@ -33,7 +33,9 @@ export class NewUserScreen extends Component {
                 age : this.state.age,
                 hostel : this.state.hostel,
                 allergy: this.state.allergy,
-                history : this.state.history
+                history : this.state.history,
+                prescription : [],
+                regno : this.props.route.params.number
             })
             .then(() => {
                 console.log('User added!');
@@ -42,7 +44,9 @@ export class NewUserScreen extends Component {
                         name : this.state.name,
                         sex : this.state.sex,
                         age : this.state.age,
-                        hostel : this.state.hostel
+                        hostel : this.state.hostel,
+                        prescription : [],
+                        regno : this.props.route.params.number
                     }
                 })
             });
